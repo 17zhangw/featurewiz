@@ -188,6 +188,19 @@ def classify_columns(df_preds, verbose=0):
     var_df = pd.Series(dict(train.dtypes)).reset_index(drop=False).rename(
                         columns={0:'type_of_column'})
     sum_all_cols['cols_delete'] = cols_delete
+    if len(var_df) == 0:
+        # Remove all columns.
+        sum_all_cols['nlp_vars'] = []
+        sum_all_cols['discrete_string_vars'] = []
+        sum_all_cols['string_bool_vars'] = []
+        sum_all_cols['num_bool_vars'] = []
+        sum_all_cols['int_vars'] = []
+        sum_all_cols['cat_vars'] = []
+        sum_all_cols['factor_vars'] = []
+        sum_all_cols['date_vars'] = []
+        sum_all_cols['id_vars'] = []
+        sum_all_cols['continuous_vars'] = []
+        return sum_all_cols
 
     var_df['bool'] = var_df.apply(lambda x: 1 if x['type_of_column'] in ['bool','object']
                         and len(train[x['index']].value_counts()) == 2 else 0, axis=1)
